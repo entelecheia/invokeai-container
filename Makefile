@@ -119,6 +119,9 @@ docker-run-base: ## run the docker base image
 docker-run-app: ## run the docker app image
 	@bash .docker/.docker-scripts/docker-compose.sh run --variant app
 
+docker-configure-app: ## configure the docker app image
+	@bash .docker/.docker-scripts/docker-compose.sh run --variant app --run 'bash scripts/configure.sh'
+
 docker-up-app: ## launch the docker app image
 	@bash .docker/.docker-scripts/docker-compose.sh up --variant app
 
