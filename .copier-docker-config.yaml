@@ -1,0 +1,59 @@
+# Changes here will be overwritten by Copier; do NOT edit manually
+_commit: v0.22.0
+_src_path: gh:entelecheia/hyperfast-docker-template
+app_clone_dirname: InvokeAI
+app_install_root: /workspace/projects
+app_service_name: app
+app_source_branch: main
+app_source_repo: entelecheia/InvokeAI
+author: Young Joon Lee
+build_images_from_dockerfile: true
+clone_source_code: true
+container_workspace_root: /workspace
+copy_scripts_dir: true
+cuda_device_id: '2'
+docker_app_image_variant_name: app
+docker_apt_packages: fontconfig fonts-nanum ffmpeg python3-opencv libopencv-dev google-perftools
+    libcairo2-dev imagemagick
+docker_base_build_from: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
+docker_base_image_variant_name: base
+docker_container_uid: 9001
+docker_container_username: app
+docker_name_prefix: INVOKEAI
+docker_project_name: invokeai
+docker_registry: ghcr.io
+docker_run_command: bash
+docker_service_name: workspace
+docker_timezone: Asia/Seoul
+docker_username: entelecheia
+email: entelecheia@hotmail.com
+enable_nvidia_gpu: true
+friendly_name: Invoke AI Container - Generative AI for Professional Creatives
+github_repo_name: invokeai-container
+github_username: entelecheia
+install_dotfiles: false
+install_pip_requirements: true
+jupyter_host_port: 18888
+jupyter_port: 8585
+jupyter_token: __juypter_token_(change_me)__
+launch_scripts: launch.sh
+main_branch: main
+pip_command: pip3
+project_description: invokeai-container offers prebuilt Docker images to quickly run
+    InvokeAI using Docker with no installation required. It includes images for both
+    CPU and GPU inference. The images come preinstalled with InvokeAI and all its
+    dependencies. They allow you to instantly start using InvokeAI for tasks like
+    text-to-image generation, image upscaling, inpainting, outpainting, etc.
+project_license: MIT
+project_short_description: A prebuilt Docker images to easily run [InvokeAI](https://github.com/invoke-ai/InvokeAI)
+    for AI-assisted art generation and creative workflows.
+python_command: python3
+ssh_host_port: 2222
+ssh_port: 22
+use_deploy_workflows: true
+use_jupyter: false
+use_ssh_service: false
+use_web_service: true
+web_service_host_port: 19092
+web_service_port: 9090
+
