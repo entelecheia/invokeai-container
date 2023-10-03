@@ -57,6 +57,7 @@ services:
     volumes:
       # Maps directories from the host to the container
       - "$PWD/.docker/scripts:$CONTAINER_WORKSPACE_ROOT/scripts"
+      - "$PWD/workspace:$CONTAINER_WORKSPACE_ROOT/invokeai"
     deploy:
       resources:
         reservations:
