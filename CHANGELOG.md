@@ -1,5 +1,12 @@
 <!--next-version-placeholder-->
 
+## v0.2.0 (2023-10-03)
+
+### Feature
+
+* **README.md:** Add instructions for building Docker image, include configuration step for Docker image ([`1eac828`](https://github.com/entelecheia/invokeai-container/commit/1eac8284fcf86c3563f33fb95d6e4251142e751c))
+* **docker:** Add configure.sh script for InvokeAI configuration ([`fd6059f`](https://github.com/entelecheia/invokeai-container/commit/fd6059fc424e818f4981988fc4ea60781b349676))
+
 ## v0.1.1 (2023-10-03)
 
 ### Fix
