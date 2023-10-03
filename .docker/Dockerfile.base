@@ -13,7 +13,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update --fix-missing \
     && apt-get install -y curl wget jq sudo \
     # !! Without python3-launchpadlib, software-properties-common fails to install
-    python3-launchpadlib software-properties-common \
+    python3.9 python3-launchpadlib software-properties-common \
     locales locales-all fontconfig fonts-nanum ffmpeg python3-opencv libopencv-dev google-perftools libcairo2-dev imagemagick \
     tzdata  \
     # Adds PPA for the latest git version
@@ -33,16 +33,21 @@ RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || true
 # Fixes sudo error related to core dumps
 RUN echo "Set disable_coredump false" > /etc/sudo.conf
 
+# Create symbolic links for Python and pip
+RUN ln -sf /usr/bin/python3.9 /usr/bin/python \
+    && ln -sf /usr/bin/python3.9 /usr/bin/python3 \
+    && ln -sf /usr/bin/pip3 /usr/bin/pip
+
 # If set to nothing, will install the latest version
 ARG PYTORCH='2.0.1'
-ARG TORCH_VISION=''
+ARG TORCH_VISION='0.15.2'
 ARG TORCH_AUDIO=''
 # Example: `cu102`, `cu113`, etc.
 ARG CUDA='cu118'
 
 RUN [ ${#PYTORCH} -gt 0 ] && VERSION='torch=='$PYTORCH'.*' ||  VERSION='torch'; python3 -m pip install --no-cache-dir -U $VERSION --extra-index-url https://download.pytorch.org/whl/$CUDA
 RUN [ ${#TORCH_VISION} -gt 0 ] && VERSION='torchvision=='TORCH_VISION'.*' ||  VERSION='torchvision'; python3 -m pip install --no-cache-dir -U $VERSION --extra-index-url https://download.pytorch.org/whl/$CUDA
-RUN [ ${#TORCH_AUDIO} -gt 0 ] && VERSION='torchaudio=='TORCH_AUDIO'.*' ||  VERSION='torchaudio'; python3 -m pip install --no-cache-dir -U $VERSION --extra-index-url https://download.pytorch.org/whl/$CUDA
+# RUN [ ${#TORCH_AUDIO} -gt 0 ] && VERSION='torchaudio=='TORCH_AUDIO'.*' ||  VERSION='torchaudio'; python3 -m pip install --no-cache-dir -U $VERSION --extra-index-url https://download.pytorch.org/whl/$CUDA
 
 # RUN python3 -m pip uninstall -y tensorflow flax
 
