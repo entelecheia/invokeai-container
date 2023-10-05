@@ -77,7 +77,7 @@ RUN chown -R $USERNAME:$USERNAME $WORKSPACE_ROOT
 
 # build patchmatch
 RUN cd /usr/lib/$(uname -p)-linux-gnu/pkgconfig/ && ln -sf opencv4.pc opencv.pc
-RUN python3 -c "from patchmatch import patch_match"
+# RUN python3 -c "from patchmatch import patch_match"
 
 # Specifies the command that will be executed when the container is run
 CMD ["bash"]
