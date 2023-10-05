@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.3.0 (2023-10-05)
+
+### Feature
+
+* **docker:** Update Dockerfile.app with new environment settings, install dependencies for Python and Torchvision in Dockerfile.app ([`cbda971`](https://github.com/entelecheia/invokeai-container/commit/cbda971ba090cb8e85809f1ecff16b23306feec5))
+
 ## v0.2.0 (2023-10-03)
 
 ### Feature
