@@ -3,4 +3,4 @@
 echo "Starting docker container..."
 
 # Launch the web server (do it every time you run InvokeAI):
-invokeai-web
+invokeai-web --host 0.0.0.0
