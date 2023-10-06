@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.4.2 (2023-10-06)
+
+### Fix
+
+* **docker:** Comment out USER_UID environment variable ([`e4dd131`](https://github.com/entelecheia/invokeai-container/commit/e4dd131da7984ed79bdb70b54a03b52576c53770))
+
 ## v0.4.1 (2023-10-06)
 
 ### Fix
