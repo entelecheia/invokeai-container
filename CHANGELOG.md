@@ -1,5 +1,16 @@
 <!--next-version-placeholder-->
 
+## v0.5.0 (2023-10-06)
+
+### Feature
+
+* **.docker:** Add openssh-server in Dockerfile.base ([`4cdd343`](https://github.com/entelecheia/invokeai-container/commit/4cdd343c1cd75260ebcfd50345c18dd94b6f95f9))
+
+### Fix
+
+* **docker:** Modify environment variable names and simplify SSH setup ([`f89d423`](https://github.com/entelecheia/invokeai-container/commit/f89d423e90b93e75db4953fe39ca7d8ebaa446e0))
+* **Dockerfile.app:** Reorganize commands and add patchmatch build ([`4075220`](https://github.com/entelecheia/invokeai-container/commit/4075220a7f10105440053694b4c2d17e185d24d1))
+
 ## v0.4.2 (2023-10-06)
 
 ### Fix
