@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "invokeai"
-version = "0.5.0"
+version = "0.5.1"
 description = "A prebuilt Docker images to easily run [InvokeAI](https://github.com/invoke-ai/InvokeAI) for AI-assisted art generation and creative workflows."
 authors = ["Young Joon Lee <entelecheia@hotmail.com>"]
 license = "MIT"

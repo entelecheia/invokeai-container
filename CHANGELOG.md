@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.5.1 (2023-10-06)
+
+### Fix
+
+* **docker:** Change CONTAINER_USER_UID to USER_UID ([`e609730`](https://github.com/entelecheia/invokeai-container/commit/e6097301e38fae0c9e53940c36f0f91b2560e3b1))
+
 ## v0.5.0 (2023-10-06)
 
 ### Feature
