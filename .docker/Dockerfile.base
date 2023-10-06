@@ -39,28 +39,6 @@ RUN ln -sf /usr/bin/python3.10 /usr/bin/python \
     && ln -sf /usr/bin/python3.10 /usr/bin/python3 \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
 
-# Setting ARGs and ENVs for user creation and workspace setup
-ARG ARG_USERNAME="app"
-ARG ARG_USER_UID=9001
-ARG ARG_USER_GID=$ARG_USER_UID
-ARG ARG_WORKSPACE_ROOT="/workspace"
-ENV USERNAME $ARG_USERNAME
-ENV USER_UID $ARG_USER_UID
-ENV USER_GID $ARG_USER_GID
-ENV WORKSPACE_ROOT $ARG_WORKSPACE_ROOT
-
-# Creates a non-root user with sudo privileges
-RUN groupadd --gid $USER_GID $USERNAME \
-    && adduser --uid $USER_UID --gid $USER_GID --force-badname --disabled-password --gecos "" $USERNAME  \
-    && echo "$USERNAME:$USERNAME" | chpasswd \
-    && adduser $USERNAME sudo \
-    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
-# Sets up the workspace for the user
-RUN rm -rf $WORKSPACE_ROOT && mkdir -p $WORKSPACE_ROOT/projects
-
 # Sets Python environment variables
 ENV PIP_DEFAULT_TIMEOUT 100
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -68,16 +46,25 @@ ENV PYTHONUNBUFFERED 1
 # Sets the time zone within the container
 ENV TZ="Asia/Seoul"
 
-# Sets the working directory to workspace root
-WORKDIR $WORKSPACE_ROOT
-# Copies scripts from host into the image
-COPY ./.docker/scripts/ ./scripts/
-RUN if [ -f ./scripts/requirements-base.txt ]; then pip3 install -r ./scripts/requirements-base.txt; fi
-RUN chown -R $USERNAME:$USERNAME $WORKSPACE_ROOT
-
 # build patchmatch
 RUN cd /usr/lib/$(uname -p)-linux-gnu/pkgconfig/ && ln -sf opencv4.pc opencv.pc
 # RUN python3 -c "from patchmatch import patch_match"
+
+ARG ARG_TORCH_VERSION=2.0.1
+ARG ARG_TORCHVISION_VERSION=0.15.2
+ARG ARG_TORCH_CUDNN=cu118
+ENV TORCH_VERSION=$ARG_TORCH_VERSION
+ENV TORCHVISION_VERSION=$ARG_TORCHVISION_VERSION
+ENV TORCH_CUDNN=$ARG_TORCH_CUDNN
+
+# Install pytorch before all other pip packages
+# NOTE: there are no pytorch builds for arm64 + cuda, only cpu
+# x86_64/CUDA is default
+RUN python3 -m venv ${VIRTUAL_ENV} &&\
+    extra_index_url_arg="--extra-index-url https://download.pytorch.org/whl/${TORCH_CUDNN}"; \
+    pip install $extra_index_url_arg \
+    torch==$TORCH_VERSION \
+    torchvision==$TORCHVISION_VERSION
 
 # Specifies the command that will be executed when the container is run
 CMD ["bash"]
