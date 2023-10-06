@@ -18,8 +18,8 @@ set -e -o pipefail
 #   docker run --rm -it -v /some/path:/invokeai -e CONTAINER_USER_UID=$(id -u) <this image>
 # Default UID: 1000 chosen due to popularity on Linux systems. Possibly 501 on MacOS.
 
-USER_ID=${CONTAINER_USER_UID:-1000}
-USER=${CONTAINER_USERNAME:-app}
+USER_ID=${USER_UID:-1000}
+USER=${USERNAME:-app}
 usermod -u "${USER_ID}" "${USER}" 1>/dev/null
 
 configure() {
@@ -44,20 +44,14 @@ else
 fi
 
 ### Set the $PUBLIC_KEY env var to enable SSH access.
-# We do not install openssh-server in the image by default to avoid bloat.
-# but it is useful to have the full SSH server e.g. on Runpod.
+# It is useful to have the full SSH server e.g. on Runpod.
 # (use SCP to copy files to/from the image, etc)
-if [[ -v "SSH_PUB_KEY" ]] && [[ ! -d "${HOME}/.ssh" ]]; then
-    apt-get update
-    apt-get install -y openssh-server
-    pushd "$HOME"
-    mkdir -p .ssh
-    echo "${SSH_PUB_KEY}" > .ssh/authorized_keys
-    chmod -R 700 .ssh
-    popd
+if [[ -n "$SSH_PUB_KEY" ]] && [[ ! -d "${HOME}/.ssh" ]]; then
+    mkdir -p "${HOME}/.ssh"
+    echo "${SSH_PUB_KEY}" > "${HOME}/.ssh/authorized_keys"
+    chmod -R 700 "${HOME}/.ssh"
     service ssh start
 fi
-
 
 cd "${INVOKEAI_ROOT}"
 
