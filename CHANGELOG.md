@@ -1,5 +1,12 @@
 <!--next-version-placeholder-->
 
+## v0.4.1 (2023-10-06)
+
+### Fix
+
+* **docker:** Remove redundant environment variables ([`74f270d`](https://github.com/entelecheia/invokeai-container/commit/74f270dd68bf1146b801951ad6dd892b584aa4b3))
+* **docker-compose:** Remove unnecessary args and add USER_UID to environment variables ([`04a5564`](https://github.com/entelecheia/invokeai-container/commit/04a5564acb085d14dd2185c058bf6a3d37bfbffc))
+
 ## v0.4.0 (2023-10-06)
 
 ### Feature
