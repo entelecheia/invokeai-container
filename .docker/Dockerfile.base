@@ -15,7 +15,7 @@ RUN apt-get update --fix-missing \
     # !! Without python3-launchpadlib, software-properties-common fails to install
     python3.10-venv python3-launchpadlib software-properties-common \
     locales locales-all fontconfig fonts-nanum ffmpeg python3-opencv libopencv-dev google-perftools libcairo2-dev imagemagick \
-    tzdata  \
+    tzdata openssh-server \
     ncdu iotop bzip2 gosu libglib2.0-0 libgl1-mesa-glx build-essential libstdc++-10-dev \
     # Adds PPA for the latest git version
     && add-apt-repository ppa:git-core/ppa -y \
@@ -45,10 +45,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 # Sets the time zone within the container
 ENV TZ="Asia/Seoul"
-
-# build patchmatch
-RUN cd /usr/lib/$(uname -p)-linux-gnu/pkgconfig/ && ln -sf opencv4.pc opencv.pc
-# RUN python3 -c "from patchmatch import patch_match"
 
 ARG ARG_TORCH_VERSION=2.0.1
 ARG ARG_TORCHVISION_VERSION=0.15.2
