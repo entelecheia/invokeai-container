@@ -1,5 +1,15 @@
 <!--next-version-placeholder-->
 
+## v0.4.0 (2023-10-06)
+
+### Feature
+
+* **docker:** Enhance launch.sh script with user configuration, SSH support, and root prevention ([`2ed8bc6`](https://github.com/entelecheia/invokeai-container/commit/2ed8bc6c26a54c367ca7da409bfb0467b6dd9da2))
+* **docker:** Add new environment variables and versions ([`c51c261`](https://github.com/entelecheia/invokeai-container/commit/c51c261899162bd59768f7d5bfde7e517cbbd89f))
+* **docker:** Add InvokeAI root variables ([`da99db6`](https://github.com/entelecheia/invokeai-container/commit/da99db67253103378190788f1901190d185925c9))
+* **docker-compose:** Add torch, torchvision, and cudnn versions arguments ([`8a5be80`](https://github.com/entelecheia/invokeai-container/commit/8a5be80cd747491545ddaaa5c68560de06d18195))
+* **docker:** Add new environment variables ([`3d1c643`](https://github.com/entelecheia/invokeai-container/commit/3d1c6435c31ae17f3b53488cde9490ce8307ecf8))
+
 ## v0.3.0 (2023-10-05)
 
 ### Feature
