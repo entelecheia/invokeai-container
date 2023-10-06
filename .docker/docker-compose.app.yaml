@@ -60,7 +60,7 @@ services:
       # Maps directories from the host to the container
       - "$PWD/.docker/scripts:$CONTAINER_WORKSPACE_ROOT/scripts"
       - ${HOST_INVOKEAI_ROOT:-$PWD/workspace}:${CONTAINER_INVOKEAI_ROOT:-/workspace/invokeai}
-      - ${HF_HOME:-~/.cache/huggingface}:${HF_HOME:-/invokeai/.cache/huggingface}
+      - ${HF_HOME:-/home/$USER/.cache/huggingface}:${HF_HOME:-/home/$CONTAINER_USERNAME/.cache/huggingface}
     deploy:
       resources:
         reservations:
