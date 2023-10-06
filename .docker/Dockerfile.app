@@ -2,8 +2,6 @@
 ARG ARG_BUILD_FROM="ghcr.io/entelecheia/invokeai:latest-base"
 FROM $ARG_BUILD_FROM
 
-USER root
-
 # Setting ARGs and ENVs for user creation and workspace setup
 ARG ARG_USERNAME="app"
 ARG ARG_USER_UID=9001
@@ -42,6 +40,10 @@ RUN git clone --branch $APP_SOURCE_BRANCH https://github.com/${ARG_APP_SOURCE_RE
 WORKDIR ${INVOKEAI_SRC}
 RUN pip install -e ".[xformers]"
 
+# build patchmatch
+RUN cd /usr/lib/$(uname -p)-linux-gnu/pkgconfig/ && ln -sf opencv4.pc opencv.pc
+RUN python3 -c "from patchmatch import patch_match"
+
 # Creates a non-root user with sudo privileges
 # check if user exists and if not, create user
 RUN if id -u $USERNAME >/dev/null 2>&1; then \
@@ -58,10 +60,6 @@ RUN if id -u $USERNAME >/dev/null 2>&1; then \
 
 # Sets up the workspace for the user
 RUN rm -rf $WORKSPACE_ROOT && mkdir -p $WORKSPACE_ROOT/projects
-RUN chown -R $USERNAME:$USERNAME $WORKSPACE_ROOT
-RUN chown -R $USERNAME:$USERNAME $APP_INSTALL_ROOT
-# Switches to the newly created user
-USER $USERNAME
 
 # Adds .local/bin to PATH
 ENV PATH="/home/$USERNAME/.local/bin:${PATH}"
@@ -74,6 +72,12 @@ COPY ./.docker/scripts/ ./scripts/
 # Installs Python dependencies listed in requirements.txt
 RUN pip3 install -r ./scripts/requirements.txt
 
+ENV HF_HOME=$APP_INSTALL_ROOT/.cache/huggingface
+RUN mkdir -p $HF_HOME
+
+# Changes ownership of the workspace to the non-root user
+RUN chown -R $USERNAME:$USERNAME $WORKSPACE_ROOT
+RUN chown -R $USERNAME:$USERNAME $APP_INSTALL_ROOT
 
 # Specifies the command that will be executed when the container is run
 CMD ["bash"]
