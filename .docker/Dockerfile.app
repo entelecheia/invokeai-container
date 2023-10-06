@@ -26,29 +26,10 @@ ENV APP_CLONE_DIRNAME $ARG_APP_CLONE_DIRNAME
 ENV APP_SOURCE_BRANCH $ARG_APP_SOURCE_BRANCH
 ENV APP_SERVICE_NAME $ARG_APP_SERVICE_NAME
 
-# Sets Python environment variables
-ENV PIP_DEFAULT_TIMEOUT 100
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-# Sets the time zone within the container
-ENV TZ="Asia/Seoul"
-
 ENV INVOKEAI_SRC=${APP_INSTALL_ROOT}/${APP_CLONE_DIRNAME}
 ENV VIRTUAL_ENV=${APP_INSTALL_ROOT}/.venvs/${APP_CLONE_DIRNAME}
 ENV INVOKEAI_ROOT=${WORKSPACE_ROOT}/${APP_CLONE_DIRNAME}
 ENV PATH="$VIRTUAL_ENV/bin:$INVOKEAI_SRC:$PATH"
-
-ARG TORCH_VERSION=2.0.1
-ARG TORCHVISION_VERSION=0.15.2
-
-# Install pytorch before all other pip packages
-# NOTE: there are no pytorch builds for arm64 + cuda, only cpu
-# x86_64/CUDA is default
-RUN python3 -m venv ${VIRTUAL_ENV} &&\
-    extra_index_url_arg="--extra-index-url https://download.pytorch.org/whl/cu118"; \
-    pip install $extra_index_url_arg \
-        torch==$TORCH_VERSION \
-        torchvision==$TORCHVISION_VERSION
 
 # Install the local package.
 # Editable mode helps use the same image for development:
