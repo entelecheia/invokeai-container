@@ -1,5 +1,12 @@
 <!--next-version-placeholder-->
 
+## v0.6.1 (2023-10-07)
+
+### Fix
+
+* **Dockerfile:** Relocate PATH environment variable setting ([`dc2e488`](https://github.com/entelecheia/invokeai-container/commit/dc2e488e2d8744d0d1bb509382f541fe31b4ea51))
+* **docker:** Rearrange PATH variable assignment ([`e69631b`](https://github.com/entelecheia/invokeai-container/commit/e69631bbd10592cfebea60f7ee2d85b07f424a61))
+
 ## v0.6.0 (2023-10-07)
 
 ### Feature
