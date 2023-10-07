@@ -67,8 +67,6 @@ RUN rm -rf $WORKSPACE_ROOT && mkdir -p $WORKSPACE_ROOT/projects
 WORKDIR $WORKSPACE_ROOT
 # Copies scripts from host into the image
 COPY ./.docker/scripts/ ./scripts/
-# Installs Python dependencies listed in requirements.txt
-RUN pip3 install -r ./scripts/requirements.txt
 
 ENV HF_HOME=$APP_INSTALL_ROOT/.cache/huggingface
 RUN mkdir -p $HF_HOME
