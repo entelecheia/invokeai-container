@@ -1,5 +1,12 @@
 <!--next-version-placeholder-->
 
+## v0.6.0 (2023-10-07)
+
+### Feature
+
+* **docker:** Add virtual environment and path in Dockerfile.base ([`00f681e`](https://github.com/entelecheia/invokeai-container/commit/00f681e30ff6236f6c433e1d1169c5e32571a711))
+* **docker:** Add new ARG parameters in docker-compose.base.yaml ([`affafc0`](https://github.com/entelecheia/invokeai-container/commit/affafc006b5e94503afc47eb459449982a5b3ed3))
+
 ## v0.5.1 (2023-10-06)
 
 ### Fix
