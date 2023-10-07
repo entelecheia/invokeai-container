@@ -39,7 +39,7 @@ services:
       IMAGE_VARIANT: $IMAGE_VARIANT
       GIT_COMMIT_GPGSIGN: $GIT_COMMIT_GPGSIGN
       SSH_PUB_KEY: $SSH_PUB_KEY
-      HF_HOME: $HF_HOME
+      HF_HOME: $APP_HF_HOME
     ulimits:
       # Sets the stack size and memory lock limits
       stack: 67108864
