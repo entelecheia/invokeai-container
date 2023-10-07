@@ -46,6 +46,12 @@ ENV PYTHONUNBUFFERED 1
 # Sets the time zone within the container
 ENV TZ="Asia/Seoul"
 
+ARG ARG_APP_INSTALL_ROOT="/opt"
+ARG ARG_APP_CLONE_DIRNAME="invokeai"
+ENV APP_INSTALL_ROOT $ARG_APP_INSTALL_ROOT
+ENV APP_CLONE_DIRNAME $ARG_APP_CLONE_DIRNAME
+ENV VIRTUAL_ENV=${APP_INSTALL_ROOT}/.venvs/${APP_CLONE_DIRNAME}
+
 ARG ARG_TORCH_VERSION=2.0.1
 ARG ARG_TORCHVISION_VERSION=0.15.2
 ARG ARG_TORCH_CUDNN=cu118
@@ -61,6 +67,9 @@ RUN python3 -m venv ${VIRTUAL_ENV} &&\
     pip install $extra_index_url_arg \
     torch==$TORCH_VERSION \
     torchvision==$TORCHVISION_VERSION
+
+# Add the path of the virtual environment to the PATH environment variable
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Specifies the command that will be executed when the container is run
 CMD ["bash"]
