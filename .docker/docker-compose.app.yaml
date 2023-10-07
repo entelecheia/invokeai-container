@@ -39,7 +39,7 @@ services:
       IMAGE_VARIANT: $IMAGE_VARIANT
       GIT_COMMIT_GPGSIGN: $GIT_COMMIT_GPGSIGN
       SSH_PUB_KEY: $SSH_PUB_KEY
-      HF_HOME: $HF_HOME
+      HF_HOME: $APP_HF_HOME
     ulimits:
       # Sets the stack size and memory lock limits
       stack: 67108864
@@ -52,8 +52,8 @@ services:
     volumes:
       # Maps directories from the host to the container
       - "$PWD/.docker/scripts:$CONTAINER_WORKSPACE_ROOT/scripts"
-      - ${HOST_INVOKEAI_ROOT:-$PWD/workspace}:${CONTAINER_INVOKEAI_ROOT:-/workspace/invokeai}
-      - ${HF_HOME:-/home/$USER/.cache/huggingface}:${HF_HOME:-$APP_INSTALL_ROOT/.cache/huggingface}
+      - ${HOST_INVOKEAI_ROOT}:${CONTAINER_INVOKEAI_ROOT}
+      - ${HF_HOME}:${APP_HF_HOME}
     deploy:
       resources:
         reservations:
