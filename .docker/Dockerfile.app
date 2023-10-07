@@ -27,7 +27,6 @@ ENV APP_SERVICE_NAME $ARG_APP_SERVICE_NAME
 ENV INVOKEAI_SRC=${APP_INSTALL_ROOT}/${APP_CLONE_DIRNAME}
 ENV VIRTUAL_ENV=${APP_INSTALL_ROOT}/.venvs/${APP_CLONE_DIRNAME}
 ENV INVOKEAI_ROOT=${WORKSPACE_ROOT}/${APP_CLONE_DIRNAME}
-ENV PATH="$VIRTUAL_ENV/bin:$INVOKEAI_SRC:$PATH"
 
 # Install the local package.
 # Editable mode helps use the same image for development:
@@ -36,6 +35,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$INVOKEAI_SRC:$PATH"
 RUN git clone --branch $APP_SOURCE_BRANCH https://github.com/${ARG_APP_SOURCE_REPO}.git ${INVOKEAI_SRC} &&\
     cd ${INVOKEAI_SRC} &&\
     git checkout $APP_SOURCE_BRANCH
+
+# Add the path of the cloned repository to PATH
+ENV PATH="$INVOKEAI_SRC:$PATH"
 
 WORKDIR ${INVOKEAI_SRC}
 RUN pip install -e ".[xformers]"
@@ -60,10 +62,6 @@ RUN if id -u $USERNAME >/dev/null 2>&1; then \
 
 # Sets up the workspace for the user
 RUN rm -rf $WORKSPACE_ROOT && mkdir -p $WORKSPACE_ROOT/projects
-
-# Adds .local/bin to PATH
-ENV PATH="/home/$USERNAME/.local/bin:${PATH}"
-ENV PATH="$VIRTUAL_ENV/bin:$INVOKEAI_SRC:$PATH"
 
 # Sets the working directory to workspace root
 WORKDIR $WORKSPACE_ROOT
