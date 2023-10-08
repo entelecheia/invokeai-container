@@ -1,6 +1,59 @@
+# syntax=docker/dockerfile:1.4
+
 # Sets the base image for subsequent instructions
 ARG ARG_BUILD_FROM="nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04"
-FROM $ARG_BUILD_FROM
+
+## Builder stage
+FROM $ARG_BUILD_FROM as builder
+
+# Setting this argument prevents interactive prompts during the build process
+ARG DEBIAN_FRONTEND=noninteractive
+# Updates the image and installs necessary packages
+RUN apt-get update --fix-missing \
+    && apt-get install -y \
+    git python3.10-venv python3-pip build-essential \
+    # Cleans up unnecessary packages to reduce image size
+    && apt-get autoremove -y \
+    && apt-get clean -y
+
+# Create symbolic links for Python and pip
+RUN ln -sf /usr/bin/python3.10 /usr/bin/python \
+    && ln -sf /usr/bin/python3.10 /usr/bin/python3 \
+    && ln -sf /usr/bin/pip3 /usr/bin/pip
+
+# Sets Python environment variables
+ENV PIP_DEFAULT_TIMEOUT 100
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+ARG ARG_APP_INSTALL_ROOT="/opt"
+ARG ARG_APP_CLONE_DIRNAME="invokeai"
+ENV APP_INSTALL_ROOT $ARG_APP_INSTALL_ROOT
+ENV APP_CLONE_DIRNAME $ARG_APP_CLONE_DIRNAME
+ENV VIRTUAL_ENV=${APP_INSTALL_ROOT}/.venvs/${APP_CLONE_DIRNAME}
+# Add the path of the virtual environment to the PATH environment variable
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+ARG ARG_TORCH_VERSION=2.0.1
+ARG ARG_TORCHVISION_VERSION=0.15.2
+ARG ARG_TORCH_CUDNN=cu118
+ENV TORCH_VERSION=$ARG_TORCH_VERSION
+ENV TORCHVISION_VERSION=$ARG_TORCHVISION_VERSION
+ENV TORCH_CUDNN=$ARG_TORCH_CUDNN
+
+# Install pytorch before all other pip packages
+# NOTE: there are no pytorch builds for arm64 + cuda, only cpu
+# x86_64/CUDA is default
+RUN python3 -m venv ${VIRTUAL_ENV} &&\
+    extra_index_url_arg="--extra-index-url https://download.pytorch.org/whl/${TORCH_CUDNN}"; \
+    pip install $extra_index_url_arg \
+    torch==$TORCH_VERSION \
+    torchvision==$TORCHVISION_VERSION
+
+#### Runtime stage ---------------------------------------
+
+# Runtime image (copy built virtual environment)
+FROM library/ubuntu:22.04 AS runtime
 
 # Sets labels for the image
 LABEL org.opencontainers.image.source="https://github.com/entelecheia/invokeai-container"
@@ -13,7 +66,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update --fix-missing \
     && apt-get install -y curl wget jq sudo \
     # !! Without python3-launchpadlib, software-properties-common fails to install
-    python3.10-venv python3-launchpadlib software-properties-common \
+    python3.10-venv python3-pip python3-launchpadlib software-properties-common \
     locales locales-all fontconfig fonts-nanum ffmpeg python3-opencv libopencv-dev google-perftools libcairo2-dev imagemagick \
     tzdata openssh-server \
     ncdu iotop bzip2 gosu libglib2.0-0 libgl1-mesa-glx build-essential libstdc++-10-dev \
@@ -25,10 +78,6 @@ RUN apt-get update --fix-missing \
     && apt-get autoremove -y \
     && apt-get clean -y
 
-# Installs the latest pip and setuptools from PyPI
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-    && python3.10 get-pip.py \
-    && rm get-pip.py
 # Sets up the locale to en_US.UTF-8
 RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || true
 # Fixes sudo error related to core dumps
@@ -54,21 +103,8 @@ ENV VIRTUAL_ENV=${APP_INSTALL_ROOT}/.venvs/${APP_CLONE_DIRNAME}
 # Add the path of the virtual environment to the PATH environment variable
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ARG ARG_TORCH_VERSION=2.0.1
-ARG ARG_TORCHVISION_VERSION=0.15.2
-ARG ARG_TORCH_CUDNN=cu118
-ENV TORCH_VERSION=$ARG_TORCH_VERSION
-ENV TORCHVISION_VERSION=$ARG_TORCHVISION_VERSION
-ENV TORCH_CUDNN=$ARG_TORCH_CUDNN
-
-# Install pytorch before all other pip packages
-# NOTE: there are no pytorch builds for arm64 + cuda, only cpu
-# x86_64/CUDA is default
-RUN python3 -m venv ${VIRTUAL_ENV} &&\
-    extra_index_url_arg="--extra-index-url https://download.pytorch.org/whl/${TORCH_CUDNN}"; \
-    pip install $extra_index_url_arg \
-    torch==$TORCH_VERSION \
-    torchvision==$TORCHVISION_VERSION
+# Copy the virtual environment from the builder stage
+COPY --link --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 # Specifies the command that will be executed when the container is run
 CMD ["bash"]
