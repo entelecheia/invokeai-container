@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.8.0 (2023-10-08)
+
+### Feature
+
+* **docker:** Add InvokeAI package to Dockerfile.base ([`d6c4fa0`](https://github.com/entelecheia/invokeai-container/commit/d6c4fa0c5247397769777e82a222357f04796a7a))
+
 ## v0.7.0 (2023-10-08)
 
 ### Feature
