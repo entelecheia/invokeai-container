@@ -20,7 +20,9 @@ set -e -o pipefail
 
 USER_UID=${USER_UID:-1000}
 USER=${USERNAME:-app}
-usermod -u "${USER_UID}" "${USER}" 1>/dev/null
+usermod -u "${USER_UID}" "${USER}"
+groupmod -g "${USER_UID}" "${USER}"
+chown --recursive "${USER}:${USER}" "${INVOKEAI_ROOT}"
 
 configure() {
     # Configure the runtime directory
