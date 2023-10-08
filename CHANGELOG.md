@@ -1,5 +1,11 @@
 <!--next-version-placeholder-->
 
+## v0.7.0 (2023-10-08)
+
+### Feature
+
+* **docker:** Add builder stage in Dockerfile.base, make use of Dockerfile multistage builds ([`627ff2a`](https://github.com/entelecheia/invokeai-container/commit/627ff2a99445a32e77969ca748835f6918dfbea6))
+
 ## v0.6.1 (2023-10-07)
 
 ### Fix
