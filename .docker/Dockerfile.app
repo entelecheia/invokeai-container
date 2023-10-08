@@ -34,12 +34,17 @@ ENV PATH="$INVOKEAI_SRC:$PATH"
 # Editable mode helps use the same image for development:
 # the local working copy can be bind-mounted into the image
 # at path defined by ${INVOKEAI_SRC}
-RUN git clone --branch $APP_SOURCE_BRANCH https://github.com/${ARG_APP_SOURCE_REPO}.git ${INVOKEAI_SRC} &&\
-    cd ${INVOKEAI_SRC} &&\
-    git checkout $APP_SOURCE_BRANCH
+# RUN git clone --branch $APP_SOURCE_BRANCH https://github.com/${ARG_APP_SOURCE_REPO}.git ${INVOKEAI_SRC} &&\
+#     cd ${INVOKEAI_SRC} &&\
+#     git checkout $APP_SOURCE_BRANCH
 
-WORKDIR ${INVOKEAI_SRC}
-RUN pip install -e ".[xformers]"
+# WORKDIR ${INVOKEAI_SRC}
+# RUN pip install -e ".[xformers]"
+
+# Link amdgpu.ids for ROCm builds
+# contributed by https://github.com/Rubonnek
+RUN mkdir -p "/opt/amdgpu/share/libdrm" &&\
+  ln -s "/usr/share/libdrm/amdgpu.ids" "/opt/amdgpu/share/libdrm/amdgpu.ids"
 
 # build patchmatch
 RUN cd /usr/lib/$(uname -p)-linux-gnu/pkgconfig/ && ln -sf opencv4.pc opencv.pc
