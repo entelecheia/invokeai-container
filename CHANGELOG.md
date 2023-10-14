@@ -1,5 +1,14 @@
 <!--next-version-placeholder-->
 
+## v0.9.0 (2023-10-14)
+
+### Feature
+
+* **dependabot:** Add new configuration file ([`3864f19`](https://github.com/entelecheia/invokeai-container/commit/3864f19e6084c714979861e4ff13f29d5def8ca6))
+* **.docker/scripts:** Add requirements.txt with InvokeAI dependency ([`91b3dd4`](https://github.com/entelecheia/invokeai-container/commit/91b3dd4e413bf53b6956a43c9ee393ddda1cf913))
+* **docker:** Add APP_VERSION to docker.common.env ([`6289685`](https://github.com/entelecheia/invokeai-container/commit/62896859fb1daf5317a7ff52f6743892eb434441))
+* **docker:** Add APP_VERSION to docker-compose.base.yaml ([`8cf5488`](https://github.com/entelecheia/invokeai-container/commit/8cf5488152a86e56cdee6d91f9354dfa13fd31dd))
+
 ## v0.8.0 (2023-10-08)
 
 ### Feature
