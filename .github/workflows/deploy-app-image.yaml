@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: ["deploy-base-image"]
-    branches: [main]
     types:
       - completed
 
@@ -29,6 +28,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: docker
 
       - name: Secure disk space for the build
         run: bash .github/scripts/free-disk-space.sh
@@ -37,6 +38,9 @@ jobs:
         uses: c-py/action-dotenv-to-setenv@v5
         with:
           env-file: ./.docker/docker.version
+
+      - name: Version from requirements file
+        run: echo "INVOKEAI_VERSION=$(grep -oP 'InvokeAI==\K\d+\.\d+\.\d+\.[a-z\d]+' .docker/scripts/requirements.txt)" >> "$GITHUB_ENV"
 
       - name: Common environment Variables from Dotenv
         uses: c-py/action-dotenv-to-setenv@v5
