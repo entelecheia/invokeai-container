@@ -38,6 +38,9 @@ jobs:
         with:
           env-file: ./.docker/docker.version
 
+      - name: Version from requirements file
+        run: echo "INVOKEAI_VERSION=$(grep -oP 'InvokeAI==\K\d+\.\d+\.\d+\.[a-z\d]+' .docker/scripts/requirements.txt)" >> "$GITHUB_ENV"
+
       - name: Common environment Variables from Dotenv
         uses: c-py/action-dotenv-to-setenv@v5
         with:
