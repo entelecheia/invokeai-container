@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: ["deploy-base-image"]
-    branches: [main]
     types:
       - completed
 
@@ -29,6 +28,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: docker
 
       - name: Secure disk space for the build
         run: bash .github/scripts/free-disk-space.sh
