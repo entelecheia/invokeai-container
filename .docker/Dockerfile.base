@@ -57,7 +57,7 @@ RUN python3 -m venv ${VIRTUAL_ENV} &&\
 #### Runtime stage ---------------------------------------
 
 # Runtime image (copy built virtual environment)
-FROM library/ubuntu:22.04 AS runtime
+FROM library/ubuntu:24.04 AS runtime
 
 # Sets labels for the image
 LABEL org.opencontainers.image.source="https://github.com/entelecheia/invokeai-container"
