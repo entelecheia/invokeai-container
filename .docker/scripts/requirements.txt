@@ -1,1 +1,1 @@
-InvokeAI==3.4.0.post2
+InvokeAI==3.5.1
